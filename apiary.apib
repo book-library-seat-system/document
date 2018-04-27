@@ -14,26 +14,26 @@ HOST: http://agendacs.apiblueprint.org/
 ### Register User [POST]
 + parameter
     + ID (required, string) - 用户学号
-    + Name (required, string) - 用户姓名
-    + Password (required, string) - 经md5加密后的用户密码
-    + Email (required, string) - 用户邮箱
-    + ErrorCode(optional, int) - 错误码
-    + ErrorInformation(optional, string) - 错误信息
+    + name (required, string) - 用户姓名
+    + password (required, string) - 经md5加密后的用户密码
+    + email (required, string) - 用户邮箱
+    + errorcode(optional, int) - 错误码
+    + errorinformation(optional, string) - 错误信息
 
 + Request (application/json)
 
         {
             "ID" : "15331234",
-            "Name": "hza",
-            "Password": "9b5299c1bcb585a7",
-            "Email": "123@qq.com",
+            "name": "hza",
+            "password": "9b5299c1bcb585a7",
+            "email": "123@qq.com",
         }
 
 + Response 201 (application/json)
     
         {
-            "ErrorCode": 0,
-            "ErrorInformation": ""
+            "errorcode": 0,
+            "errorinformation": ""
         }
 
 ## User Login [/v1/user/login]
@@ -41,45 +41,45 @@ HOST: http://agendacs.apiblueprint.org/
 ### User Login [POST]
 + parameter
     + ID (required, string) - 用户学号
-    + Name (required, string) - 用户姓名
-    + Password (required, string) - 经md5加密后的用户密码
-    + Email (required, string) - 用户邮箱
-    + ErrorCode(optional, int) - 错误码
-    + ErrorInformation(optional, string) - 错误信息
+    + password (required, string) - 经md5加密后的用户密码
+    + name (optional, string) - 用户姓名
+    + email (optional, string) - 用户邮箱
+    + errorcode(optional, int) - 错误码
+    + errorinformation(optional, string) - 错误信息
 
 
 + Request (application/json)
 
         {
             "ID": "15331234",
-            "Password":"9b5299c1bcb585a71"
+            "password":"9b5299c1bcb585a71"
         }
 
 + Response 201 (application/json)
 
         {
-            "ErrorCode": 0,
-            "ErrorInformation": ""
-            "Name":"hza",
-            "Email":"123@qq.com",
+            "errorcode": 0,
+            "errorinformation": ""
+            "name":"hza",
+            "email":"123@qq.com",
         }
 
 ## User Logout [/v1/user/logout]
 
 ### User Logout [GET]
 + parameter
-    + ErrorCode(optional, int) - 错误码
-    + ErrorInformation(optional, string) - 错误信息
+    + errorcode(optional, int) - 错误码
+    + errorinformation(optional, string) - 错误信息
 
 + Request
     + Header
-        Cookie:{ "ID" : "15331234" }
+        cookie:{ "ID" : "15331234" }
 
 + Response 200 (application/json)
 
         {
-            "ErrorCode": 0,
-            "ErrorInformation": ""
+            "errorcode": 0,
+            "errorinformation": ""
         }
 
 # Group Seats
@@ -87,69 +87,71 @@ HOST: http://agendacs.apiblueprint.org/
 关于座位的api介绍。
 
 **PS:之后操作必须在登陆后才能进行，请求必须含有Cookie字段！** <br>
-**Cookie : { "ID" : "15331234" }**
+**cookie : { "ID" : "15331234" }**
 
 ## Show Valid Time Intervals [/v1/timeintervals]
 
 ### Show Valid Time Intervals [GET]
 + parameter
-    + TimeIntervals (optional, [(string, int)]) - 可选择的预约开始时间和剩余座位数
-    + BeginTime (optional, string) - 预约开始时间
-    + RestSeatsNum (optional, int) - 对应时间剩余座位
-    + Interval (optional, int) - 时间间隔，单位为h
-    + ErrorCode(optional, int) - 错误码
-    + ErrorInformation(optional, string) - 错误信息
+    + timeintervals (optional, [(string, int)]) - 可选择的预约开始时间和剩余座位数
+    + begintime (optional, string) - 预约开始时间
+    + endtime (optional, string) - 预约结束时间
+    + restseatsnum (optional, int) - 对应时间剩余座位
+    + errorcode(optional, int) - 错误码
+    + errorinformation(optional, string) - 错误信息
 
 + Request
     + Header
-        Cookie:{ "ID" : "15331234" }
+        cookie:{ "ID" : "15331234" }
 
 + Response 201 (application/json)
 
         {
-            "ErrorCode": 0,
-            "ErrorInformation": "",
-            "TimeIntervals": [
+            "errorcode": 0,
+            "errorinformation": "",
+            "timeintervals": [
                 {
-                    "BeginTime": "2018-04-08 10:00:00",
-                    "RestSeatsNum": 200
+                    "begintime": "2018-04-08 10:00:00",
+                    "endtime": "2018-04-08 11:00:00",
+                    "restseatsnum": 200
                 },
                 {
-                    "BeginTime": "2018-04-08 12:00:00",
-                    "RestSeatsNum": 280
+                    "begintime": "2018-04-08 11:00:00",
+                    "endtime": "2018-04-08 12:00:00",
+                    "restseatsnum": 180
                 },
                 {
-                    "BeginTime": "2018-04-08 16:00:00",
-                    "RestSeatsNum": 10
+                    "begintime": "2018-04-08 12:00:00",
+                    "endtime": "2018-04-08 13:00:00",
+                    "restseatsnum": 260
                 }
-            ],
-            "Interval": 2
+            ]
         }
 
 ## Show Seats Information [/v1/seats]
 
 ### Show Seats Information [GET]
 + parameter
-    + BeginTime (required, string) - 预约开始时间
-    + SeatInfo (optional, [int]) - 代表座位是否被预约
-    + ErrorCode(optional, int) - 错误码
-    + ErrorInformation(optional, string) - 错误信息
+    + begintime (required, string) - 预约开始时间
+    + seatinfo (optional, [int]) - 代表座位是否被预约(0是未预约)
+    + errorcode(optional, int) - 错误码
+    + errorinformation(optional, string) - 错误信息
 
 + Request (application/json)
     + Header
-        Cookie:{ "ID" : "15331234" }
+        cookie:{ "ID" : "15331234" }
     
     + Body
         {
-            "BeginTime": "2018-04-08 10:00:00"
+            "begintime": "2018-04-08 10:00:00"
         }
 
 + Response 201 (application/json)
 
         {
-            "ErrorCode": 0,
-            "ErrorInformation": "",
-            "SeatInfo": [
+            "errorcode": 0,
+            "errorinformation": "",
+            "seatinfo": [
                 0,
                 1,
                 1,
@@ -166,98 +168,105 @@ HOST: http://agendacs.apiblueprint.org/
 
 ### Seat Book [POST]
 + parameter
-    + BeginTime (required, string) - 预约开始时间
-    + SeatID (optional, int) - 座位ID
-    + ErrorCode(optional, int) - 错误码
-    + ErrorInformation(optional, string) - 错误信息
+    + begintime (required, string) - 预约开始时间
+    + seatID (optional, int) - 座位ID
+    + errorcode(optional, int) - 错误码
+    + errorinformation(optional, string) - 错误信息
 
 + Request (application/json)
     + Header
-        Cookie:{ "ID" : "15331234" }
+        cookie:{ "ID" : "15331234" }
     
     + Body
         {
-            "BeginTime": "2018-04-08 10:00:00",
-            "SeatID": 20
+            "begintime": "2018-04-08 10:00:00",
+            "endtime": "2018-04-08 13:00:00",
+            "seatID": 20
         }
 
 + Response 201 (application/json)
 
         {
-            "ErrorCode": 0,
-            "ErrorInformation": ""
+            "errorcode": 0,
+            "errorinformation": ""
         }
 
 ## Seat Unbook [/v1/seat/unbook]
 
 ### Seat Unbook [POST]
 + parameter
-    + BeginTime (required, string) - 预约开始时间
-    + SeatID (optional, int) - 座位ID
-    + ErrorCode(optional, int) - 错误码
-    + ErrorInformation(optional, string) - 错误信息
+    + begintime (required, string) - 预约开始时间
+    + endtime (optional, string) - 预约结束时间
+    + seatID (optional, int) - 座位ID
+    + errorcode(optional, int) - 错误码
+    + errorinformation(optional, string) - 错误信息
 
 + Request (application/json)
     + Header
-        Cookie:{ "ID" : "15331234" }
+        cookie:{ "ID" : "15331234" }
     
     + Body
         {
-            "BeginTime": "2018-04-08 10:00:00",
-            "SeatID": 22
+            "begintime": "2018-04-08 10:00:00",
+            "endtime": "2018-04-08 11:00:00",
+            "seatID": 22
         }
 
 + Response 201 (application/json)
 
         {
-            "ErrorCode": 15,
-            "ErrorInformation": "Can't unbook another seats!"
+            "errorcode": 15,
+            "errorinformation": "Can't unbook another seats!"
         }
 
 ## Seat Signin [/v1/seat/signin]
 
+使用微信小程序！！先不实现
+
 ### Seat Signin [GET]
 + parameter
-    + SeatID (optional, int) - 座位ID
-    + ErrorCode(optional, int) - 错误码
-    + ErrorInformation(optional, string) - 错误信息
+    + seatID (optional, int) - 座位ID
+    + errorcode(optional, int) - 错误码
+    + errorinformation(optional, string) - 错误信息
 
 + Request (application/json)
     + Header
-        Cookie:{ "ID" : "15331234" }
+        cookie:{ "ID" : "15331234" }
     
     + Body
         {
-            "SeatID": 22
+            "seatID": 22
         }
 
 + Response 201 (application/json)
 
         {
-            "ErrorCode": 21,
-            "ErrorInformation": "Current time isn't match book begin time!"
+            "errorcode": 21,
+            "errorinformation": "Current time isn't match book begin time!"
         }
 
 ## Seat Signout [/v1/seat/signout]
 
+使用微信小程序！！先不实现
+
 ### Seat Signout [GET]
 + parameter
-    + SeatID (optional, int) - 座位ID
-    + ErrorCode(optional, int) - 错误码
-    + ErrorInformation(optional, string) - 错误信息
+    + seatID (optional, int) - 座位ID
+    + errorcode(optional, int) - 错误码
+    + errorinformation(optional, string) - 错误信息
 
 + Request (application/json)
     + Header
-        Cookie:{ "ID" : "15331234" }
+        cookie:{ "ID" : "15331234" }
     
     + Body
         {
-            "SeatID": 22
+            "seatID": 22
         }
 
 + Response 201 (application/json)
 
         {
-            "ErrorCode": 22,
-            "ErrorInformation": "Current time isn't match book end time!"
+            "errorcode": 22,
+            "errorinformation": "Current time isn't match book end time!"
         }
