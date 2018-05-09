@@ -9,7 +9,7 @@ HOST: http://agendacs.apiblueprint.org/
 
 关于用户的Api介绍。
 
-## User Register [/users]
+## User Register [/v1/users]
 
 ### Register User [POST]
 + parameter
@@ -46,7 +46,7 @@ HOST: http://agendacs.apiblueprint.org/
     + password (required, string) - 经md5加密后的用户密码
     + name (optional, string) - 用户姓名
     + email (optional, string) - 用户邮箱
-    + school (required, string) - 用户学校
+    + school (optional, string) - 用户学校
     + errorcode(optional, int) - 错误码
     + errorinformation(optional, string) - 错误信息
 
@@ -91,7 +91,7 @@ HOST: http://agendacs.apiblueprint.org/
 关于座位的api介绍。
 
 **PS:之后操作必须在登陆后才能进行，请求必须含有Cookie字段！** <br>
-**cookie : { "ID" : "15331234" }**
+**cookie:{ "ID" : "15331234", "school" : "Sun Yat-sen University" }**
 
 ## Show Valid Time Intervals [/v1/timeintervals]
 
@@ -106,7 +106,7 @@ HOST: http://agendacs.apiblueprint.org/
 
 + Request
     + Header
-        cookie:{ "ID" : "15331234" }
+        cookie:{ "ID" : "15331234", "school" : "Sun Yat-sen University" }
 
 + Response 201 (application/json)
 
@@ -143,7 +143,7 @@ HOST: http://agendacs.apiblueprint.org/
 
 + Request (application/json)
     + Header
-        cookie:{ "ID" : "15331234" }
+        cookie:{ "ID" : "15331234", "school" : "Sun Yat-sen University" }
     
     + Body
     
@@ -181,7 +181,7 @@ HOST: http://agendacs.apiblueprint.org/
 
 + Request (application/json)
     + Header
-        cookie:{ "ID" : "15331234" }
+        cookie:{ "ID" : "15331234", "school" : "Sun Yat-sen University" }
     
     + Body
     
@@ -210,7 +210,7 @@ HOST: http://agendacs.apiblueprint.org/
 
 + Request (application/json)
     + Header
-        cookie:{ "ID" : "15331234" }
+        cookie:{ "ID" : "15331234", "school" : "Sun Yat-sen University" }
     
     + Body
         {
