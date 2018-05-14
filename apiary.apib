@@ -47,6 +47,7 @@ HOST: http://agendacs.apiblueprint.org/
     + name (optional, string) - 用户姓名
     + email (optional, string) - 用户邮箱
     + school (optional, string) - 用户学校
+    + violation (optional, int) - 违规次数
     + errorcode(optional, int) - 错误码
     + errorinformation(optional, string) - 错误信息
 
@@ -64,6 +65,7 @@ HOST: http://agendacs.apiblueprint.org/
             "name":"hza",
             "email":"123@qq.com",
             "school": "Sun Yat-sen University",
+            "violation": 0,
             "errorcode": 0,
             "errorinformation": ""
         }
@@ -77,7 +79,7 @@ HOST: http://agendacs.apiblueprint.org/
 
 + Request
     + Header
-        cookie:{ "ID" : "15331234" }
+        cookie:{ "ID" : "15331234", "school" : "Sun Yat-sen University" }
 
 + Response 200 (application/json)
 
@@ -137,6 +139,7 @@ HOST: http://agendacs.apiblueprint.org/
 ### Show Seats Information [GET]
 + parameter
     + begintime (required, string) - 预约开始时间
+    + endtime (required, string) - 预约结束时间
     + seatinfo (optional, [int]) - 代表座位是否被预约(0是未预约)
     + errorcode(optional, int) - 错误码
     + errorinformation(optional, string) - 错误信息
@@ -148,7 +151,8 @@ HOST: http://agendacs.apiblueprint.org/
     + Body
     
         {
-            "begintime": "2018-04-08 10:00:00"
+            "begintime": "2018-04-08 10:00:00",
+            "endtime": "2018-04-08 11:00:00"
         }
 
 + Response 201 (application/json)
