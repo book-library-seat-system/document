@@ -11,12 +11,11 @@ HOST: http://agendacs.apiblueprint.org/
 
 ## User Register [/v1/users]
 
-### Register User [POST]
+### User Register [POST]
 + parameter
-    + ID (required, string) - 用户学号
-    + name (required, string) - 用户姓名
+    + openID (required, string) - 用户微信ID
+    + netID (required, string) - 用户学校内部ID
     + password (required, string) - 经md5加密后的用户密码
-    + email (required, string) - 用户邮箱
     + school (required, string) - 用户学校
     + errorcode(optional, int) - 错误码
     + errorinformation(optional, string) - 错误信息
@@ -24,10 +23,9 @@ HOST: http://agendacs.apiblueprint.org/
 + Request (application/json)
 
         {
-            "ID" : "15331234",
-            "name": "hza",
+            "openID" : "123456789",
+            "netID" : "12341234"
             "password": "9b5299c1bcb585a7",
-            "email": "123@qq.com",
             "school": "Sun Yat-sen University"
         }
 
@@ -35,19 +33,57 @@ HOST: http://agendacs.apiblueprint.org/
     
         {
             "errorcode": 0,
-            "errorinformation": ""
+            "errorinformation": "",
         }
 
-## User Login [/v1/user/login]
-
-### User Login [POST]
+### User Info [GET]
 + parameter
-    + ID (required, string) - 用户学号
-    + password (required, string) - 经md5加密后的用户密码
-    + name (optional, string) - 用户姓名
-    + email (optional, string) - 用户邮箱
+    + openID (required, string) - 用户微信ID
     + school (optional, string) - 用户学校
     + violation (optional, int) - 违规次数
+    + bookseatinfos (optional, [(string, string, int, int)]) - 用户预约和签到的信息
+    + begintime (optional, string) - 预约开始时间
+    + endtime (optional, string) - 预约结束时间
+    + seatID (optional, int) - 座位ID
+    + seatinfo (optional, int) - 座位当前信息(0是未预约，1是已预约，2是已签到)
+    + errorcode(optional, int) - 错误码
+    + errorinformation(optional, string) - 错误信息
+
++ Request (application/json)
+
+        {
+            "openID": "123456789"
+        }
+
++ Response 200 (application/json)
+
+        {
+            "school": "Sun Yat-sen University",
+            "voilation": 0,
+            "bookseatinfos": [
+                {
+                    "begintime": "2018-04-08 10:00:00",
+                    "endtime": "2018-04-08 11:00:00",
+                    "seatID": 22,
+                    "seatinfo": 2
+                },
+                {
+                    "begintime": "2018-04-08 11:00:00",
+                    "endtime": "2018-04-08 12:00:00",
+                    "seatID": 22,
+                    "seatinfo": 1
+                }
+            ],
+            "errorcode": 0,
+            "errorinformation": ""
+        }
+## User Login [/v1/user/login]
+感觉不需要
+
+### User Login [GET]
++ parameter
+    + openID (required, string) - 用户微信ID
+    + school (optional, string) - 用户学校
     + errorcode(optional, int) - 错误码
     + errorinformation(optional, string) - 错误信息
 
@@ -55,31 +91,31 @@ HOST: http://agendacs.apiblueprint.org/
 + Request (application/json)
 
         {
-            "ID": "15331234",
-            "password": "9b5299c1bcb585a7"
+            "openID": "123456789"
         }
 
 + Response 201 (application/json)
 
         {
-            "name":"hza",
-            "email":"123@qq.com",
             "school": "Sun Yat-sen University",
-            "violation": 0,
             "errorcode": 0,
             "errorinformation": ""
         }
 
 ## User Logout [/v1/user/logout]
+感觉不需要
 
 ### User Logout [GET]
 + parameter
+    + openID (required, string) - 用户微信ID
     + errorcode(optional, int) - 错误码
     + errorinformation(optional, string) - 错误信息
 
-+ Request
-    + Header
-        cookie:{ "ID" : "15331234", "school" : "Sun Yat-sen University" }
++ Request (application/json)
+
+        {
+            "openID": "123456789"
+        }
 
 + Response 200 (application/json)
 
@@ -88,33 +124,35 @@ HOST: http://agendacs.apiblueprint.org/
             "errorinformation": ""
         }
 
+
 # Group Seats
 
 关于座位的api介绍。
 
-**PS:之后操作必须在登陆后才能进行，请求必须含有Cookie字段！** <br>
-**cookie:{ "ID" : "15331234", "school" : "Sun Yat-sen University" }**
+**PS:之后操作必须在登陆后才能进行，请求必须含有openID字段！** <br>
 
 ## Show Valid Time Intervals [/v1/timeintervals]
 
 ### Show Valid Time Intervals [GET]
 + parameter
-    + timeintervals (optional, [(string, int)]) - 可选择的预约开始时间和剩余座位数
+    + openID (required, string) - 用户微信ID
+    + timeintervals (optional, [(string, string, int)]) - 可选择的预约开始时间和剩余座位数
     + begintime (optional, string) - 预约开始时间
     + endtime (optional, string) - 预约结束时间
     + restseatsnum (optional, int) - 对应时间剩余座位
     + errorcode(optional, int) - 错误码
     + errorinformation(optional, string) - 错误信息
 
-+ Request
-    + Header
-        cookie:{ "ID" : "15331234", "school" : "Sun Yat-sen University" }
 
-+ Response 201 (application/json)
++ Request (application/json)
 
         {
-            "errorcode": 0,
-            "errorinformation": "",
+            "openID": "123456789"
+        }
+
++ Response 200 (application/json)
+
+        {
             "timeintervals": [
                 {
                     "begintime": "2018-04-08 10:00:00",
@@ -131,34 +169,34 @@ HOST: http://agendacs.apiblueprint.org/
                     "endtime": "2018-04-08 13:00:00",
                     "restseatsnum": 260
                 }
-            ]
+            ],
+            "errorcode": 0,
+            "errorinformation": ""
         }
 
 ## Show Seats Information [/v1/seats]
 
 ### Show Seats Information [GET]
 + parameter
+    + openID (required, string) - 用户微信ID
     + begintime (required, string) - 预约开始时间
     + endtime (required, string) - 预约结束时间
-    + seatinfo (optional, [int]) - 代表座位是否被预约(0是未预约)
+    + seatinfos (optional, [int]) - 代表座位是否被预约(0是未预约，1是已预约，2是已签到)
     + errorcode(optional, int) - 错误码
     + errorinformation(optional, string) - 错误信息
 
 + Request (application/json)
-    + Header
-        cookie:{ "ID" : "15331234", "school" : "Sun Yat-sen University" }
-    
-    + Body
-    
+
         {
+            "openID": "123456789",
             "begintime": "2018-04-08 10:00:00",
             "endtime": "2018-04-08 11:00:00"
         }
 
-+ Response 201 (application/json)
++ Response 200 (application/json)
 
         {
-            "seatinfo": [
+            "seatinfos": [
                 0,
                 1,
                 1,
@@ -177,6 +215,7 @@ HOST: http://agendacs.apiblueprint.org/
 
 ### Seat Book [POST]
 + parameter
+    + openID (required, string) - 用户微信ID
     + begintime (required, string) - 预约开始时间
     + endtime (required, string) - 预约结束时间
     + seatID (required, int) - 座位ID
@@ -184,14 +223,11 @@ HOST: http://agendacs.apiblueprint.org/
     + errorinformation(optional, string) - 错误信息
 
 + Request (application/json)
-    + Header
-        cookie:{ "ID" : "15331234", "school" : "Sun Yat-sen University" }
-    
-    + Body
-    
+
         {
+            "openID": "123456789",
             "begintime": "2018-04-08 10:00:00",
-            "endtime": "2018-04-08 13:00:00",
+            "endtime": "2018-04-08 11:00:00",
             "seatID": 20
         }
 
@@ -206,61 +242,57 @@ HOST: http://agendacs.apiblueprint.org/
 
 ### Seat Unbook [POST]
 + parameter
+    + openID (required, string) - 用户微信ID
     + begintime (required, string) - 预约开始时间
-    + endtime (optional, string) - 预约结束时间
-    + seatID (optional, int) - 座位ID
+    + endtime (required, string) - 预约结束时间
+    + seatID (required, int) - 座位ID
     + errorcode(optional, int) - 错误码
     + errorinformation(optional, string) - 错误信息
 
 + Request (application/json)
-    + Header
-        cookie:{ "ID" : "15331234", "school" : "Sun Yat-sen University" }
-    
-    + Body
+
         {
+            "openID": "123456789",
             "begintime": "2018-04-08 10:00:00",
             "endtime": "2018-04-08 11:00:00",
             "seatID": 22
         }
 
-+ Response 201 (application/json)
++ Response 200 (application/json)
 
         {
-            "errorcode": 15,
-            "errorinformation": "Can't unbook another seats!"
+            "errorcode": 107,
+            "errorinformation": "学生信息与该座位不符"
         }
 
 ## Seat Signin [/v1/seat/signin]
 
-使用微信小程序！！先不实现
-
-### Seat Signin [GET]
+### Seat Signin [POST]
 + parameter
-    + seatID (optional, int) - 座位ID
+    + openID (required, string) - 用户微信ID
+    + seatID (required, int) - 座位ID
     + errorcode(optional, int) - 错误码
     + errorinformation(optional, string) - 错误信息
 
 + Request (application/json)
-    + Header
-        cookie:{ "ID" : "15331234" }
-    
-    + Body
+
         {
+            "openID": "123456789",
             "seatID": 22
         }
 
 + Response 201 (application/json)
 
         {
-            "errorcode": 21,
-            "errorinformation": "Current time isn't match book begin time!"
+            "errorcode": 0,
+            "errorinformation": ""
         }
 
 ## Seat Signout [/v1/seat/signout]
 
-使用微信小程序！！先不实现
+暂时不需要
 
-### Seat Signout [GET]
+### Seat Signout [POST]
 + parameter
     + seatID (optional, int) - 座位ID
     + errorcode(optional, int) - 错误码
