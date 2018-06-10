@@ -83,53 +83,6 @@ HOST: http://agendacs.apiblueprint.org/
             "errorcode": 0,
             "errorinformation": ""
         }
-## User Login [/v1/user/login]
-感觉不需要
-
-### User Login [GET]
-+ parameter
-    + openID (required, string) - 用户微信ID
-    + school (optional, string) - 用户学校
-    + errorcode(optional, int) - 错误码
-    + errorinformation(optional, string) - 错误信息
-
-
-+ Request (application/json)
-
-        {
-            "openID": "123456789"
-        }
-
-+ Response 201 (application/json)
-
-        {
-            "school": "Sun Yat-sen University",
-            "errorcode": 0,
-            "errorinformation": ""
-        }
-
-## User Logout [/v1/user/logout]
-感觉不需要
-
-### User Logout [GET]
-+ parameter
-    + openID (required, string) - 用户微信ID
-    + errorcode(optional, int) - 错误码
-    + errorinformation(optional, string) - 错误信息
-
-+ Request (application/json)
-
-        {
-            "openID": "123456789"
-        }
-
-+ Response 200 (application/json)
-
-        {
-            "errorcode": 0,
-            "errorinformation": ""
-        }
-
 
 # Group Seats
 
@@ -228,6 +181,43 @@ HOST: http://agendacs.apiblueprint.org/
             "errorinformation": ""
         }
 
+## Show User Booked Seats Information [/v1/bookedseats]
+
+### Show User Booked Seats Information [GET]
++ parameter
+    + openID (required, string) - 用户微信ID
+    + seatinfos (optional, [(begintime, endtime, seatid)]) - 代表用户预约的座位
+    + begintime (optional, string) - 预约开始时间
+    + endtime (optional, string) - 预约结束时间
+    + seatid (optional, int) - 座位id
+    + errorcode(optional, int) - 错误码
+    + errorinformation(optional, string) - 错误信息
+
++ Request (application/json)
+
+        {
+            "openID": "123456789",
+        }
+
++ Response 200 (application/json)
+
+        {
+            "seatinfos": [
+                {
+                    "begintime": "2018-04-08 10:00:00",
+                    "endtime": "2018-04-08 11:00:00",
+                    "seatid": 120
+                },
+                {
+                    "begintime": "2018-04-08 14:00:00",
+                    "endtime": "2018-04-08 18:00:00",
+                    "seatid": 120
+                },
+            ],
+            "errorcode": 0,
+            "errorinformation": ""
+        }
+
 ## Seat Book [/v1/seat/book]
 
 ### Seat Book [POST]
@@ -303,30 +293,4 @@ HOST: http://agendacs.apiblueprint.org/
         {
             "errorcode": 0,
             "errorinformation": ""
-        }
-
-## Seat Signout [/v1/seat/signout]
-
-暂时不需要
-
-### Seat Signout [POST]
-+ parameter
-    + seatID (optional, int) - 座位ID
-    + errorcode(optional, int) - 错误码
-    + errorinformation(optional, string) - 错误信息
-
-+ Request (application/json)
-    + Header
-        cookie:{ "ID" : "15331234" }
-    
-    + Body
-        {
-            "seatID": 22
-        }
-
-+ Response 201 (application/json)
-
-        {
-            "errorcode": 22,
-            "errorinformation": "Current time isn't match book end time!"
         }
